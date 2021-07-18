@@ -19,6 +19,21 @@
         <link rel = "stylesheet" type = "text/css" href="css/styles.css" />
         <link rel="stylesheet" type="text/css" href="map.css" />
         <script src="map.js"></script>
+        <!-- for the map -->
+        <style>
+        table, td{
+            border: 1px solid black;
+        }
+        </style>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+    <!-- Leaflet JS -->
+   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
         </head>
         <body>
         
@@ -94,12 +109,62 @@
         <h3>My Google Maps Demo</h3>
         <!--The div element for the map -->
         <div id="map"></div>
+
+        <div id="placeinfo">
+        <table style="width: 70%">
+            <tr>
+                <th><div id="lat"></div></th>
+                <th>lng: <div id="lng"></th>
+            </tr>
+            <tr>
+                <th>coord: <div id="address"></div></th>
+            </tr>
+        </table>
+    </div>
     
         <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-        <script
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnT-HoRlPw8ZvLj96Xv0aYFKEoc97MdPs&callback=initMap&libraries=&v=weekly"
-          async
-        ></script>
+        <script type="text/javascript">
+        var lat = 51.07685689840186
+        var lng = 71.38356608436422
+        var map = L.map('map').setView([lat, lng], 12);
+        const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreepMap</a> contributors';
+        const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        const tiles = L.tileLayer(tileUrl, { attribution });
+        tiles.addTo(map);
+
+        var markerOptions = {
+            title: "MyLocation",
+            clickable: true, 
+            draggable: true
+        }
+        var marker = new L.Marker([lat, lng], markerOptions)
+        marker.addTo(map);
+
+        document.getElementById("lat").innerHTML = lat;
+        document.getElementById("lng").innerHTML = lng;
+
+        function moveMarker(e) {
+            lat = (e.latlng.lat);
+            lng = (e.latlng.lng);
+            var newLatLng = new L.LatLng(lat, lng)
+            marker.setLatLng(newLatLng);
+            document.getElementById("lat").innerHTML = lat;
+            document.getElementById("lng").innerHTML = lng;
+        }
+
+        marker.on('drag', function(e) {
+            lat = (e.latlng.lat);
+            lng = (e.latlng.lng);
+            var newLatLng = new L.LatLng(lat, lng)
+            marker.setLatLng(newLatLng);
+            document.getElementById("lat").innerHTML = lat;
+            document.getElementById("lng").innerHTML = lng;
+        })
+        
+        //document.getElementById('address').innerHTML = lat;
+
+        map.on('click', moveMarker);
+        </script> 
         </div>
         </body>
         </html>
