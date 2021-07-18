@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <title>KazSTSat's Web Project</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+        <!-- wRunner CSS -->
+        <link rel="stylesheet" href="css/wrunner-default-theme.css">
+        <!-- wRunner JS -->
+        <script src="js/wrunner-native.js"></script>
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type = "text/css" href="css/rSlider.min.css">
+        <script type="text/javascript" src="js/common.js"></script>
+        <script type="text/javascript" src="js/rSlider.min.js"></script>
+        <link rel = "stylesheet" type = "text/css" href="css/styles.css" />
+        <link rel="stylesheet" type="text/css" href="map.css" />
+        <script src="map.js"></script>
+        </head>
+        <body>
+        
+        <!-- Navbar -->
+        <div class="w3-top">
+          <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+            <a class="w3-bar-item w3-button w3-right w3-hide-large w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+            <a href="#" class="w3-bar-item w3-button w3-theme-l1">Logo</a>
+            <a href="#" class="w3-bar-item w3-button w3-hide-small leaflet-gmx-icon leaflet-gmx-icon-point leaflet-gmx-icon-img leaflet-gmx-icon-sprite leaflet-control"></a>
+            <a href="#" class="w3-bar-item w3-button w3-hide-small "></a>
+            <a href="#" class="w3-bar-item w3-button w3-hide-small"></a>
+            <a href="#" class="w3-bar-item w3-button w3-hide-small "></a>
+            <a href="#" class="w3-bar-item w3-button w3-hide-small w3-hide-medium "></a>
+            <a href="#" class="w3-bar-item w3-button w3-hide-small w3-hide-medium "></a>
+          </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <nav class="w3-sidebar w3-bar-block w3-collapse w3-small w3-theme-l5 w3-animate-left" id="mySidebar">
+         
+          <div class="topnav">
+          <div class="search-container" style="background-color:#e9e9e9">
+            <a href="https://search.kosmosnimki.ru/" class="first"><i style='font-size:24px; margin-right: 70px; ' class='far'>&#xf0c8;</i></a>
+            <a href="https://search.kosmosnimki.ru/" class="second"><i style='font-size:24px;margin-right: 70px;' class='fas'>&#xf5ee;</i></a>
+            <a href="https://search.kosmosnimki.ru/" class="third"><i style="font-size:24px; margin-right: 70px;" class="fa">&#xf276;</i></a>
+          </div>
+          </div>
+          <div class="date">
+          <form action="/action_page.php">
+            <label class="w3-small">c</label>
+            <input type="date" name="dateFrom">
+            <br><br>
+            <label class="w3-small">до</label>
+            <input type="date" name="dateDue">
+          </form>
+          </div>
+          <div class="middle">
+            <div class="multi-range-slider">
+                <label class="w3-medium" id="label1">Облачность, %</label> 
+                <input type="range" id="input-left" min="0" max="100" value="25">
+                <input type="range" id="input-right" min="0" max="100" value="75">
+        
+                <div class="slider">
+                    <div class="track"></div>
+                    <div class="range"></div>
+                    <div class="thumb left"></div>
+                    <div class="thumb right"></div>
+                </div>
+            </div>
+        </div>   
+        <div class="middle">
+            <div class="multi-range-slider">
+                <label class="w3-medium" id="label1">Угол сьемки, °</label> 
+                <input type="range" id="input-left" min="0" max="100" value="25">
+                <input type="range" id="input-right" min="0" max="100" value="75">
+        
+                <div class="slider">
+                    <div class="track"></div>
+                    <div class="range"></div>
+                    <div class="thumb left"></div>
+                    <div class="thumb right"></div>
+                </div>
+            </div>
+        </div>   
+        
+        <div>
+          <form action="index1.html">
+            <button type="submit" class="poisk">Найти снимки</button>
+            </form>
+        </div>   
+        </nav>
+        <div>
+        <h3>My Google Maps Demo</h3>
+        <!--The div element for the map -->
+        <div id="map"></div>
+    
+        <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+        <script
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnT-HoRlPw8ZvLj96Xv0aYFKEoc97MdPs&callback=initMap&libraries=&v=weekly"
+          async
+        ></script>
+        </div>
+        </body>
+        </html>
+        
