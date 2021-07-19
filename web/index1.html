@@ -4,6 +4,7 @@
         <title>KazSTSat's Web Project</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
         <!-- wRunner CSS -->
         <link rel="stylesheet" href="css/wrunner-default-theme.css">
         <!-- wRunner JS -->
@@ -14,6 +15,21 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script type="text/javascript" src="js/common.js"></script>
         <link rel = "stylesheet" type = "text/css" href="css/styles.css" />
+         <!-- for the map -->
+         <style>
+          table, td{
+              border: 1px solid black;
+          }
+          </style>
+  
+      <!-- Leaflet CSS -->
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+     crossorigin=""/>
+      <!-- Leaflet JS -->
+     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+     integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+     crossorigin=""></script>
         </head>
         <body>
         
@@ -48,11 +64,69 @@
             </tr>
           </table>
         </nav>
-        
-        <!-- Overlay effect when opening sidebar on small screens -->
-        <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-        
-        
+         <!--MAIN-->
+
+         <div class="w3-main" style="margin-left:350px; margin-top:-12px;">
+          <h3>My Google Maps Demo</h3>
+          <!--The div element for the map -->
+          <div id="map"></div>
+  
+          <div id="placeinfo">
+          <table style="width: 70%">
+              <tr>
+                  <th><div id="lat"></div></th>
+                  <th>lng: <div id="lng"></th>
+              </tr>
+              <tr>
+                  <th>coord: <div id="address"></div></th>
+              </tr>
+          </table>
+      </div>
+      
+          <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+          <script type="text/javascript">
+          var lat = 51.07685689840186
+          var lng = 71.38356608436422
+          var map = L.map('map').setView([lat, lng], 12);
+          const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreepMap</a> contributors';
+          const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          const tiles = L.tileLayer(tileUrl, { attribution });
+          tiles.addTo(map);
+  
+          var markerOptions = {
+              title: "MyLocation",
+              clickable: true, 
+              draggable: true
+          }
+          var marker = new L.Marker([lat, lng], markerOptions)
+          marker.addTo(map);
+  
+          document.getElementById("lat").innerHTML = lat;
+          document.getElementById("lng").innerHTML = lng;
+  
+          function moveMarker(e) {
+              lat = (e.latlng.lat);
+              lng = (e.latlng.lng);
+              var newLatLng = new L.LatLng(lat, lng)
+              marker.setLatLng(newLatLng);
+              document.getElementById("lat").innerHTML = lat;
+              document.getElementById("lng").innerHTML = lng;
+          }
+  
+          marker.on('drag', function(e) {
+              lat = (e.latlng.lat);
+              lng = (e.latlng.lng);
+              var newLatLng = new L.LatLng(lat, lng)
+              marker.setLatLng(newLatLng);
+              document.getElementById("lat").innerHTML = lat;
+              document.getElementById("lng").innerHTML = lng;
+          })
+          
+          //document.getElementById('address').innerHTML = lat;
+  
+          map.on('click', moveMarker);
+          </script> 
+          </div>
         </body>
         </html>
         
