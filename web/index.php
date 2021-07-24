@@ -22,7 +22,7 @@
   <script type="text/javascript" src="js/rSlider.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/styles.css" />
   <link rel="stylesheet" href="bundle.css" charset="utf-8">
-  <link rel="stylesheet" type="text/css" href="map.css" />
+  
   <script src="map.js"></script>
   <!-- for the map -->
   <style>
@@ -65,7 +65,7 @@
 
 
     <div class="date">
-      <form action="/index1.php" method="POST">
+      <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
           <label class="w3-medium" id="label1">Даты</label>
           <br><br>
         <label class="w3-small">c</label>
@@ -86,8 +86,10 @@
           <label class="w3-small">до</label>
           <input type="text" id="angle2" name="angle2" style="width:60px; border-radius:4px; border: solid white;"><br><br>
           <label class="w3-medium" id="label1">Координаты, °</label><br><br>
-          <input type="text" id="latw" name="latw" style="width:140px; border-radius:4px; border: solid white;"><br><br>
-          <input type="text" id="lngw" name="lngw" style="width:140px; border-radius:4px; border: solid white;"><br><br>
+          
+          <input type="text" id="latw" name="latw" style="width:200px; border-radius:4px; border: solid white;"><br><br>
+          <input type="text" id="lngw" name="lngw" style="width:200px; border-radius:4px; border: solid white;"><br><br>
+          
         <br> <br>
             <button type="submit" class="poisk">Найти снимки</button>
       </form>
@@ -100,7 +102,7 @@
   <div class="w3-main" style="margin-left:350px; margin-top:-12px;">
     <h3>My Google Maps Demo</h3>
     <!--The div element for the map -->
-    <div id="map"></div>
+    <div id="map" style="height:400px;"></div>
     <footer>
      
       <div class="w3-container w3-theme-l2 w3-padding-32" style="width:100%;height:100%;">
@@ -124,8 +126,8 @@
            $lng = $_POST['lngw'];
            $sql= "SELECT caption, cloudCover, state, creationDate FROM r_acquisition_updated WHERE AcquisitionID in (
            SELECT AcquisitionID FROM r_stripparameters_updated WHERE 
-           UpCoorLat > 33.687781758439364 AND 33.687781758439364 > LowCoorLat 
-           AND UpCoorLon > -95.93261718750001 AND LowCoorLon < -95.93261718750001 AND
+           UpCoorLat > '$lat' AND '$lat' > LowCoorLat 
+           AND UpCoorLon > '$lng' AND LowCoorLon < '$lng' AND
            '$dateFrom' < trueCaptureStart AND trueCaptureStart < '$dateDue' AND 
            '$cloud1' < cloudCover AND cloudCover < '$cloud2' AND 
            '$angle1' < roll AND roll < '$angle2')" ; 
@@ -176,8 +178,8 @@
       var marker = new L.Marker([lat, lng], markerOptions)
       marker.addTo(map);
 
-      document.getElementById("latw").value = lat;
-      document.getElementById("lngw").value = lng;
+       document.getElementById("latw").value = lat;
+       document.getElementById("lngw").value = lng;
 
       function moveMarker(e) {
         lat = (e.latlng.lat);
