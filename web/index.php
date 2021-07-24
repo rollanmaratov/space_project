@@ -86,10 +86,8 @@
           <label class="w3-small">до</label>
           <input type="text" id="angle2" name="angle2" style="width:60px; border-radius:4px; border: solid white;"><br><br>
           <label class="w3-medium" id="label1">Координаты, °</label><br><br>
-          <label class="w3-small" id=lat name="lat1"></label><br>         
-          <label class="w3-small" id=lng name="lng1"></label><br><br>
-          <input type="text" id="latw" name="latw" style="width:60px; border-radius:4px; border: solid white;"><br><br>
-          <input type="text" id="lngw" name="lngw" style="width:60px; border-radius:4px; border: solid white;"><br><br>
+          <input type="text" id="latw" name="latw" style="width:140px; border-radius:4px; border: solid white;"><br><br>
+          <input type="text" id="lngw" name="lngw" style="width:140px; border-radius:4px; border: solid white;"><br><br>
         <br> <br>
             <button type="submit" class="poisk">Найти снимки</button>
       </form>
@@ -178,16 +176,16 @@
       var marker = new L.Marker([lat, lng], markerOptions)
       marker.addTo(map);
 
-      document.getElementById("lat").innerHTML = lat;
-      document.getElementById("lng").innerHTML = lng;
+      document.getElementById("latw").value = lat;
+      document.getElementById("lngw").value = lng;
 
       function moveMarker(e) {
         lat = (e.latlng.lat);
         lng = (e.latlng.lng);
         var newLatLng = new L.LatLng(lat, lng)
         marker.setLatLng(newLatLng);
-        document.getElementById("lat").innerHTML = lat;
-        document.getElementById("lng").innerHTML = lng;
+        document.getElementById("latw").value = lat;
+        document.getElementById("lngw").value = lng;
       }
 
       marker.on('drag', function (e) {
@@ -195,8 +193,8 @@
         lng = (e.latlng.lng);
         var newLatLng = new L.LatLng(lat, lng)
         marker.setLatLng(newLatLng);
-        document.getElementById("lat").innerHTML = lat;
-        document.getElementById("lng").innerHTML = lng;
+        document.getElementById("latw").value = lat;
+        document.getElementById("lngw").value = lng;
       })
 
       //document.getElementById('address').innerHTML = lat;
