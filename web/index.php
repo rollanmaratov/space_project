@@ -22,7 +22,6 @@
   <script type="text/javascript" src="js/rSlider.min.js"></script>
   <link rel="stylesheet" type="text/css" href="css/styles.css" />
   <link rel="stylesheet" href="bundle.css" charset="utf-8">
-  
   <script src="map.js"></script>
   <!-- for the map -->
   <style>
@@ -76,22 +75,22 @@
         <label class="w3-medium" id="label1">Облачность, %</label>
             <br><br>
         <label class="w3-small" >от</label>
-        <input type="text" id="cloud1"  name="cloud1" style="width:60px; border-radius:4px; border: solid white;">
+        <input type="text" id="cloud1"  name="cloud1" style="width:80px; border-radius:4px; border: solid white;">
         <label class="w3-small">до</label>
-        <input type="text" id="cloud2" name="cloud2" style="width:60px; border-radius:4px; border: solid white;"><br><br>
+        <input type="text" id="cloud2" name="cloud2" style="width:80px; border-radius:4px; border: solid white;"><br><br>
         <label class="w3-medium" id="label1">Угол съемки, °</label>
         <br> <br>
           <label class="w3-small">от</label>
-          <input type="text" id="angle1" name="angle1" style="width:60px; border-radius:4px; border: solid white;">
+          <input type="text" id="angle1" name="angle1" style="width:80px; border-radius:4px; border: solid white;">
           <label class="w3-small">до</label>
-          <input type="text" id="angle2" name="angle2" style="width:60px; border-radius:4px; border: solid white;"><br><br>
+          <input type="text" id="angle2" name="angle2" style="width:80px; border-radius:4px; border: solid white;"><br><br>
           <label class="w3-medium" id="label1">Координаты, °</label><br><br>
           
           <input type="text" id="latw" name="latw" style="width:200px; border-radius:4px; border: solid white;"><br><br>
           <input type="text" id="lngw" name="lngw" style="width:200px; border-radius:4px; border: solid white;"><br><br>
           
         <br> <br>
-            <button type="submit" class="poisk">Найти снимки</button>
+            <button type="submit" name="filter" class="poisk">Найти снимки</button>
       </form>
     </div>
 
@@ -109,6 +108,7 @@
         <h4 class="w3-center">Найденные снимки</h4>
     <table style="width:100%; border:solid white 1px;">
       <tr>
+          <th>ID</th>
         <th>Название</th>
         <th>Облачность</th>
         <th>Угол</th>
@@ -116,30 +116,67 @@
       </tr>
       <?php 
            $conn = new mysqli("localhost", "gyegempz_kazst", "123456q!", "gyegempz_kazst");
-           $dateFrom = $_POST['dateFrom']; 
-           $dateDue = $_POST['dateDue']; 
-           $cloud1 = $_POST['cloud1'];
-           $cloud2 = $_POST['cloud2'];
-           $angle1 = $_POST['angle1'];
-           $angle2 = $_POST['angle2'];
-           $lat = $_POST['latw'];
-           $lng = $_POST['lngw'];
-           $sql= "SELECT caption, cloudCover, state, creationDate FROM r_acquisition_updated WHERE AcquisitionID in (
-           SELECT AcquisitionID FROM r_stripparameters_updated WHERE 
-           UpCoorLat > '$lat' AND '$lat' > LowCoorLat 
-           AND UpCoorLon > '$lng' AND LowCoorLon < '$lng' AND
-           '$dateFrom' < trueCaptureStart AND trueCaptureStart < '$dateDue' AND 
-           '$cloud1' < cloudCover AND cloudCover < '$cloud2' AND 
-           '$angle1' < roll AND roll < '$angle2')" ; 
-           $rs = mysqli_query($conn, $sql); 
+
+           $condition = "";
+           
+           if(!empty($_POST['dateFrom'])){ 
+               $dateFrom = $_POST['dateFrom'];
+               $condition .= " AND'$dateFrom' <= trueCaptureStart ";
+           }
+           
+           if(!empty($_POST['dateDue'])){ 
+               $dateDue = $_POST['dateDue'];
+               $condition .= " AND '$dateDue' >= trueCaptureStart ";
+           }
+           
+           if(!empty($_POST['cloud1'])){ 
+               $cloud1 = $_POST['cloud1'];
+               $condition .= " AND '$cloud1' <= cloudCover ";
+           }
+           if(!empty($_POST['cloud2'])){ 
+               $cloud2 = $_POST['cloud2'];
+               $condition .= " AND '$cloud2' >= cloudCover ";
+           }
+           
+           if(!empty($_POST['angle1'])){ 
+               $angle1 = $_POST['angle1'];
+               $condition .= " AND '$angle1' <= roll ";
+           }
+           if(!empty($_POST['angle2'])){ 
+               $angle2 = $_POST['angle2'];
+               $condition .= " AND '$angle2' >= roll ";
+           }
+           if(!empty($_POST['latw'])){ 
+               $lat = $_POST['latw'];
+               $condition .= " AND LowCoorLat <= '$lat' AND '$lat' <= UpCoorLat ";
+           }
+           if(!empty($_POST['lngw'])){ 
+               $lng = $_POST['lngw'];
+               $condition .= " AND LowCoorLon <= '$lng' AND '$lng' <= UpCoorLon ";
+           }
+           
+           if(!empty($condition)){ 
+               $query="SELECT AcquisitionID, caption, cloudCover, state, creationDate FROM r_acquisition_updated WHERE AcquisitionID in (
+           SELECT AcquisitionID FROM r_stripparameters_updated WHERE ".ltrim($condition," AND").")";
+               
+           }else{ 
+               $query="SELECT AcquisitionID, caption, cloudCover, state, creationDate FROM r_acquisition_updated";
+               
+           }
+           
+           $rs = mysqli_query($conn, $query); 
            if($rs){  
            while($row=mysqli_fetch_array($rs)) {
-               echo "<tr><td>".$row['caption']."</td>
+               echo "<tr><td>".$row['AcquisitionID']."</td>
+               <td>".$row['caption']."</td>
                      <td>".$row['cloudCover']."</td>
                      <td>".$row['state']."</td>
                      <td>".$row['creationDate']."</td></tr>";
                       }
-                 }  
+            }
+           
+
+  
                  
            ?>
     </table>
@@ -160,8 +197,8 @@
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script type="text/javascript">
-      var lat = 33.687781758439364
-      var lng = -95.93261718750001 
+      var lat = 51
+      var lng = 71
       var map = L.map('map').setView([lat, lng], 12);
       const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreepMap</a> contributors';
       const tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
